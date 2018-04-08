@@ -3,7 +3,6 @@
 #
 # Very short sample app used with Db2 Warehouse on Cloud to demonstrate
 # how to use a SQL Cloud Database with a web app.
-#
 
 import os
 from flask import Flask,redirect,render_template,request
@@ -11,6 +10,7 @@ import urllib
 import datetime
 import json
 import ibm_db
+import get_sentiment_review
 
 app = Flask(__name__)
 
@@ -27,6 +27,8 @@ db2cred['hostname'] = 'dashdb-entry-yp-dal09-09.services.dal.bluemix.net'
 db2cred['port'] = '50000'
 db2cred['username'] = 'dash11634'
 db2cred['password']='sx_f8IBR8_wU'
+
+
 
 # handle database request
 def review(name=None):
@@ -110,6 +112,11 @@ def reviewroute():
 @app.route('/business', methods=['GET'])
 def businesses():
 	return retBusiness(None)
+
+@app.route('/sentiment', methods=['GET'])
+def sentimentvalues():
+    review = request.args.get('textReview')
+    return json.dumps(get_sentiment_review.get_sentiment_values(review))
 
 port = os.getenv('PORT', '5000')
 if __name__ == "__main__":
