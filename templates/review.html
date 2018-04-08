@@ -1,0 +1,40 @@
+{# Display information about a city. #}
+{# The app fetches the information from the database and passes it into this page in "ci". #}
+{% extends "base.html" %}
+{% block title %}Review Information{% endblock %}
+{% block content %}
+
+{# Loop over Multiple fetched reviews #}
+
+<table>
+    <tr>      
+        <th>review_id</th>
+        <th>user_id</th>
+        <th>business_id</th>
+        <th>stars</th>
+        <th>date</th>
+        <th>text</th>
+        <th>useful</th>
+        <th>funny</th>
+        <th>cool</th>
+    </tr>
+
+
+    {% for review in ci %}
+
+    <tr>
+        <td>{{review['REVIEW_ID']}}</td>
+        <td>{{review['USER_ID']}}</td>
+        <td>{{review['BUSINESS_ID']}}</td>
+        <td>{{review['STARS']}}</td>
+        <td>{{review['DATE']}}</td>
+        <td>{{review['TEXT']}}</td>
+        <td>{{review['USEFUL']}}</td>
+        <td>{{review['FUNNY']}}</td>
+        <td>{{review['COOL']}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

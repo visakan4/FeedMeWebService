@@ -1,0 +1,14 @@
+
+{% extends "base.html" %}
+{% block title %}Natural Language Processing{% endblock %}
+{% block content %}
+<h1>Feed Me! Our Favourite Food Assistant</h1>
+
+
+<br />
+<p>
+ <form action="/review" method="get">
+  Reviews: <input type="text" name="name" maxlength="200" width="60"> <input type="submit" value="Search">
+</form>
+</p>
+{% endblock %}

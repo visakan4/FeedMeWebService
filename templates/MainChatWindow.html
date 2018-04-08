@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='chatstyle.css') }}">
+    <script>
+        function formatAMPM(date) {
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return strTime;
+        }
+
+        //-- No use time. It is a javaScript effect.
+        function insertChat(who, text, time) {
+            if (time === undefined) {
+                time = 0;
+            }
+            var control = "";
+            var date = formatAMPM(new Date());
+
+            if (who == "me") {
+                control = '<li style="width:100%">' +
+                    '<div class="msj macro">' +
+                    '<div class="avatar"><img class="img-circle" style="width:100%;" src="https://png.icons8.com/color/32/000000/user.png" /></div>' +
+                    '<div class="text text-l">' +
+                    '<p>' + text + '</p>' +
+                    '<p><small>' + date + '</small></p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</li>';
+            } else {
+                control = '<li style="width:100%;">' +
+                    '<div class="message-right macro">' +
+                    '<div class="text text-r">' +
+                    '<p>' + text + '</p>' +
+                    '<p><small>' + date + '</small></p>' +
+                    '</div>' +
+                    '<div class="avatar" style="padding:0px 0px 0px 10px !important"><img class="img-circle" style="width:100%;" src="https://png.icons8.com/color/32/000000/bot.png" /></div>' +
+                    '</li>';
+                Speak(text);
+            }
+            setTimeout(
+                function () {
+                    $("ul").append(control).scrollTop($("ul").prop('scrollHeight'));
+                }, time);
+
+        }
+
+
+        function Speak(say) {
+            if ("speechSynthesis" in window) {
+                var utterance = new SpeechSynthesisUtterance(say);
+                //msg.voice = voices[10]; // Note: some voices don't support altering params
+                //msg.voiceURI = 'native';
+                //utterance.volume = 1; // 0 to 1
+                utterance.rate = 1; // 0.1 to 10
+                utterance.pitch = 1; //0 to 2
+                //utterance.text = 'Hello World';
+                //utterance.lang = 'en-US';
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+
+        $(document).ready(function () {
+
+
+            $(".userchat").on("keydown", function (e) {
+                if (e.which == 13) {
+                    var text = $(this).val();
+                    if (text !== "") {
+                        insertChat("me", text);
+                        insertChat("bot", text, 2)
+                        $(this).val('');
+                    }
+                }
+            });
+
+
+            $('#replyIcon').click(function () {
+                $(".userchat").trigger({ type: 'keydown', which: 13, keyCode: 13 });
+            })
+
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" style="color:ivory" href="#">Feed Me</a>
+            </div>
+
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="col-lg-3 col-lg-offset-4 frame" style="margin-top:100px">
+            <ul></ul>
+            <div>
+                <div class="message-right macro">
+                    <div class="text text-r" style="background:whitesmoke !important">
+                        <input class="userchat" placeholder="Type a message" />
+                    </div>
+
+                </div>
+                <div style="padding:10px;">
+                    <span id="replyIcon" class="glyphicon glyphicon-share-alt"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

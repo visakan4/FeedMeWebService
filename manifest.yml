@@ -1,0 +1,5 @@
+applications:
+- name: feedmefood
+  memory: 256M
+  command: python feedme.py
+  host: feedmefood
