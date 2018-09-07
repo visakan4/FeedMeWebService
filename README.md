@@ -20,7 +20,7 @@ application mainly aims to assist the users in finding the best restaurant under
 
 Android Application : https://github.com/visakan4/FeedMe_ChatBot_Android_Application
 
-Web Service: https://github.com/Nishanth32/FeedMeWebService
+Web Service: https://github.com/visakan4/FeedMeWebService
 
 Preprocessing scripts: https://github.com/visakan4/FeedMe_ChatBot_ML
 
